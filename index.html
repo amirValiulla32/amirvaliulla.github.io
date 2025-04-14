@@ -1,73 +1,210 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>amirvaliulla.com</title>
+  <title>Accessing...</title>
   <style>
     :root {
-      --bg-dark: #1B2A40;
-      --accent-red: #B01827;
-      --text-gray: #C0C0C0;
-      --stealth-black: #0F0F0F;
-      --electric-blue: #0077FF;
+      --black: #000000;
+      --red: #B01827;
+      --silver: #C0C0C0;
     }
 
     body {
-      background: var(--bg-dark);
-      color: var(--text-gray);
+      margin: 0;
+      background-color: var(--black);
+      color: var(--silver);
       font-family: 'Courier New', monospace;
       height: 100vh;
-      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
       overflow: hidden;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      color: var(--accent-red);
       position: relative;
-      animation: glitch 1.5s infinite;
-      text-align: center;
-      letter-spacing: 1.5px;
+      flex-direction: column;
     }
 
-    p {
+    .crt-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 0, 0, 0.03),
+        rgba(255, 0, 0, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      z-index: 5;
+      animation: flicker 1.5s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.95; }
+      50% { opacity: 0.85; }
+    }
+
+    .terminal-output {
+      position: relative;
+      max-width: 700px;
+      width: 100%;
+      margin: auto;
+      text-align: left;
       font-size: 1rem;
-      color: var(--text-gray);
-      max-width: 600px;
-      margin-top: 1rem;
-      opacity: 0.75;
+      font-family: 'Courier New', monospace;
+      color: var(--red);
+      white-space: pre-wrap;
+      z-index: 3;
+      opacity: 0.95;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
-    @keyframes glitch {
-      0% {
-        text-shadow: 1px 1px var(--electric-blue), -1px -1px var(--accent-red);
-      }
-      20% {
-        text-shadow: -2px 2px var(--accent-red), 2px -2px var(--electric-blue);
-      }
-      40% {
-        text-shadow: 2px -1px var(--electric-blue), -1px 2px var(--accent-red);
-      }
-      60% {
-        text-shadow: -2px -2px var(--accent-red), 2px 2px var(--electric-blue);
-      }
-      80% {
-        text-shadow: 1px -1px var(--electric-blue), -1px 1px var(--accent-red);
-      }
-      100% {
-        text-shadow: 0 0 var(--electric-blue), 0 0 var(--accent-red);
-      }
+    #cursor {
+      display: inline-block;
+      animation: blink-cursor 1s step-start infinite;
+    }
+
+    @keyframes blink-cursor {
+      50% { opacity: 0; }
+    }
+
+    .glitch-line {
+      animation: glitchFlicker 0.3s ease-in-out;
+    }
+
+    @keyframes glitchFlicker {
+      0% { opacity: 0.5; transform: translateX(-1px); }
+      50% { opacity: 1; transform: translateX(1px); }
+      100% { opacity: 0.8; transform: translateX(0); }
+    }
+
+    .enter-btn {
+      display: none;
+      margin-top: 30px;
+      background: transparent;
+      border: 2px solid var(--red);
+      color: var(--red);
+      font-family: 'Courier New', monospace;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 4;
+      transition: background 0.3s;
+    }
+
+    .enter-btn:hover {
+      background-color: rgba(176, 24, 39, 0.2);
     }
   </style>
 </head>
 <body>
-  <h1>amirvaliulla.com</h1>
-  <p>Something is brewing. Check back soon.</p>
+  <div class="terminal-output"><span id="console-text"></span><span id="cursor">|</span></div>
+  <button class="enter-btn" id="enterBtn" onclick="window.location.href='portfolio.html'">INITIATE LINK</button>
+  <div class="crt-overlay"></div>
+
+  <script>
+    const consoleText = document.getElementById("console-text");
+    const cursor = document.getElementById("cursor");
+    const enterBtn = document.getElementById("enterBtn");
+
+    let data = {
+      ip: "0.0.0.0",
+      city: "UNKNOWN",
+      country: "--",
+      browser: navigator.userAgent,
+      os: navigator.platform,
+      resolution: `${window.screen.width}x${window.screen.height}`
+    };
+
+    fetch('https://ipapi.co/json')
+      .then(res => res.json())
+      .then(info => {
+        data.ip = info.ip;
+        data.city = info.city;
+        data.country = info.country_name;
+      })
+      .finally(() => startTyping());
+
+    const lines = [
+      ">>> INTRUDER DETECTED.",
+      () => `>>> LOCATION: ${data.city.toUpperCase()}, ${data.country.toUpperCase()}`,
+      () => `>>> DEVICE: ${data.os} / ${data.browser.split(' ')[0]}`,
+      () => `>>> IP: ${data.ip}`,
+      ">>> ACCESS LOGGED.",
+      "",
+      ">>> INITIATING COUNTERTRACE...",
+      "",
+      ">>> SOMEONE GOT HERE FIRST.",
+      "",
+      ">>> DECRYPTING NODE SIGNATURE...",
+      ">>> 7A6F6E652D415631 → 010000010100110101001001",
+      ">>> ...01000001 01001101 01001001 01010010..."
+    ];
+
+    const finalSignature = "AMIR VALIULLA ✓";
+    let currentLine = 0;
+    let currentChar = 0;
+    let scrambleActive = false;
+    let revealIndex = 0;
+    let scrambleInterval;
+
+    function typeLine() {
+      if (scrambleActive) return;
+
+      if (currentLine >= lines.length) {
+        startScramble();
+        return;
+      }
+
+      let lineContent = typeof lines[currentLine] === 'function' ? lines[currentLine]() : lines[currentLine];
+
+      if (currentChar < lineContent.length) {
+        consoleText.innerHTML += `<span class='glitch-line'>${lineContent[currentChar]}</span>`;
+        currentChar++;
+        setTimeout(typeLine, 45);
+      } else {
+        consoleText.innerHTML += '\n';
+        currentLine++;
+        currentChar = 0;
+        setTimeout(typeLine, 900);
+      }
+    }
+
+    function startTyping() {
+      setTimeout(typeLine, 2000);
+    }
+
+    function startScramble() {
+      scrambleActive = true;
+      const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const displayLength = finalSignature.length;
+      let revealed = Array(displayLength).fill(" ");
+
+      scrambleInterval = setInterval(() => {
+        let line = ">>> IDENTITY UNLOCKED: ";
+        for (let i = 0; i < displayLength; i++) {
+          if (i < revealIndex) {
+            line += finalSignature[i];
+          } else {
+            line += charset.charAt(Math.floor(Math.random() * charset.length));
+          }
+        }
+        consoleText.innerHTML += `\r${line}\n`;
+
+        revealIndex++;
+        if (revealIndex > displayLength) {
+          clearInterval(scrambleInterval);
+          setTimeout(() => {
+            enterBtn.style.display = 'inline-block';
+          }, 1500);
+        }
+      }, 100);
+    }
+  </script>
 </body>
 </html>
-
