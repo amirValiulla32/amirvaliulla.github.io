@@ -40,12 +40,17 @@
         transparent 2px
       );
       z-index: 5;
-      animation: flicker 1.5s infinite;
+      animation: flicker 1.5s infinite, flash 0.3s steps(1) infinite alternate;
     }
 
     @keyframes flicker {
       0%, 100% { opacity: 0.95; }
       50% { opacity: 0.85; }
+    }
+
+    @keyframes flash {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.05); }
     }
 
     .terminal-output {
@@ -83,7 +88,22 @@
       100% { opacity: 0.8; transform: translateX(0); }
     }
 
-    .enter-btn {
+    .char {
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: fadeInChar 0.2s forwards;
+    }
+
+    @keyframes fadeInChar {
+      to {
+        opacity: 1;
+        transform: scale(1);
+        text-shadow: 0 0 4px red, 0 0 10px crimson, 0 0 20px darkred;
+      }
+    }
+
+    .enter-btn, .trace-btn {
       display: none;
       margin-top: 30px;
       background: transparent;
@@ -97,13 +117,14 @@
       transition: background 0.3s;
     }
 
-    .enter-btn:hover {
+    .enter-btn:hover, .trace-btn:hover {
       background-color: rgba(176, 24, 39, 0.2);
     }
   </style>
 </head>
 <body>
   <div class="terminal-output"><span id="console-text"></span><span id="cursor">|</span></div>
+  <button class="trace-btn" id="traceBtn">TRACE ORIGIN</button>
   <button class="enter-btn" id="enterBtn" onclick="window.location.href='portfolio.html'">INITIATE LINK</button>
   <div class="crt-overlay"></div>
 
@@ -111,6 +132,7 @@
     const consoleText = document.getElementById("console-text");
     const cursor = document.getElementById("cursor");
     const enterBtn = document.getElementById("enterBtn");
+    const traceBtn = document.getElementById("traceBtn");
 
     let data = {
       ip: "0.0.0.0",
@@ -121,12 +143,14 @@
       resolution: `${window.screen.width}x${window.screen.height}`
     };
 
-    fetch('https://ipapi.co/json')
+    fetch('https://ipwho.is/')
       .then(res => res.json())
       .then(info => {
-        data.ip = info.ip;
-        data.city = info.city;
-        data.country = info.country_name;
+        if (info.success) {
+          data.ip = info.ip;
+          data.city = info.city;
+          data.country = info.country;
+        }
       })
       .finally(() => startTyping());
 
@@ -137,27 +161,18 @@
       () => `>>> IP: ${data.ip}`,
       ">>> ACCESS LOGGED.",
       "",
-      ">>> INITIATING COUNTERTRACE...",
-      "",
-      ">>> SOMEONE GOT HERE FIRST.",
-      "",
-      ">>> DECRYPTING NODE SIGNATURE...",
-      ">>> 7A6F6E652D415631 → 010000010100110101001001",
-      ">>> ...01000001 01001101 01001001 01010010..."
+      ">>> INITIATING COUNTERTRACE..."
     ];
 
-    const finalSignature = "AMIR VALIULLA ✓";
+    const finalSignature = "AMIR VALIULLA";
     let currentLine = 0;
     let currentChar = 0;
-    let scrambleActive = false;
-    let revealIndex = 0;
-    let scrambleInterval;
 
     function typeLine() {
-      if (scrambleActive) return;
-
       if (currentLine >= lines.length) {
-        startScramble();
+        setTimeout(() => {
+          traceBtn.style.display = 'inline-block';
+        }, 1000);
         return;
       }
 
@@ -175,26 +190,22 @@
       }
     }
 
-    function startTyping() {
-      setTimeout(typeLine, 2000);
-    }
-
     function startScramble() {
-      scrambleActive = true;
+      let revealIndex = 0;
       const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       const displayLength = finalSignature.length;
-      let revealed = Array(displayLength).fill(" ");
 
-      scrambleInterval = setInterval(() => {
-        let line = ">>> IDENTITY UNLOCKED: ";
+      const scrambleInterval = setInterval(() => {
+        let line = "";
         for (let i = 0; i < displayLength; i++) {
           if (i < revealIndex) {
-            line += finalSignature[i];
+            line += `<span class='char' style='animation-delay:${i * 0.05}s'>${finalSignature[i]}</span>`;
           } else {
-            line += charset.charAt(Math.floor(Math.random() * charset.length));
+            const randChar = charset.charAt(Math.floor(Math.random() * charset.length));
+            line += `<span class='char'>${randChar}</span>`;
           }
         }
-        consoleText.innerHTML += `\r${line}\n`;
+        consoleText.innerHTML = `>>> IDENTITY UNLOCKED: ${line}_`;
 
         revealIndex++;
         if (revealIndex > displayLength) {
@@ -204,6 +215,15 @@
           }, 1500);
         }
       }, 100);
+    }
+
+    traceBtn.addEventListener("click", () => {
+      traceBtn.style.display = 'none';
+      startScramble();
+    });
+
+    function startTyping() {
+      setTimeout(typeLine, 2000);
     }
   </script>
 </body>
