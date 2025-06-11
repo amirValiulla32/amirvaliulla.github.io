@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PROFILE RECORD</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000;
+      --red: #B01827;
+      --silver: #C0C0C0;
+      --muted: #444;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--black);
+      color: var(--silver);
+      font-family: 'IBM Plex Mono', monospace;
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 40%;
+      padding: 40px;
+      border-right: 2px solid var(--muted);
+    }
+
+    .sidebar h1 {
+      font-size: 2rem;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .sidebar p {
+      font-size: 1rem;
+      color: var(--silver);
+    }
+
+    .main {
+      width: 60%;
+      padding: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-content: flex-start;
+    }
+
+    .file {
+      width: 100px;
+      height: 100px;
+      background: none;
+      border: none;
+      padding: 10px;
+      position: relative;
+      color: var(--silver);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .file:hover {
+      background-color: transparent;
+    }
+
+    .file::before {
+      content: '\1F4C1'; /* Folder icon */
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    .glitch::before {
+      border: 2px dashed var(--red);
+    }
+
+    .file.redacted::after {
+      content: 'REDACTED';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        var(--black) 5px,
+        var(--black) 10px
+      );
+      border: 2px dashed var(--red);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+      z-index: 1;
+    }
+
+    .file.redacted:hover::after {
+      display: flex;
+    }
+
+    .file[title] {
+      position: relative;
+    }
+
+    .file[title]:hover::before {
+      content: '📁';
+    }
+
+    .file[title]::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--black);
+      color: var(--silver);
+      border: 1px solid var(--red);
+      padding: 5px 8px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .file[title]:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <p>Name: Amir Valiulla</p>
+    <p>Status: Active</p>
+    <p>Access Level: [REDACTED]</p>
+    <p>Mission: Build software with impact, vision, and style.</p>
+  </div>
+  <div class="main">
+    <div class="file" title="Bias detection & Gaza event tracking">PalTrack.dev</div>
+    <div class="file glitch" title="AWS security automation system">SecureScrape-X</div>
+    <div class="file" title="AI-powered personalized learning system">LearnFlow AI</div>
+    <div class="file glitch redacted" title="Prototype under NDA">Project_Arkham</div>
+    <div class="file" title="Information scrubbing SaaS">DataDrain</div>
+    <div class="file glitch redacted" title="Module: TBA (Q3)">ComingSoon.sys</div>
+  </div>
+</body>
+</html>
