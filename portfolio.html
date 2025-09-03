@@ -15,64 +15,187 @@
             --matrix-green: #00ff00;
         }
 
-        @keyframes matrix-rain {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100vh); }
-        }
-
-        @keyframes glitch-effect {
-            0% {
-                transform: translate(0);
-                text-shadow: 0 0 5px var(--matrix-green);
-            }
-            20% {
-                transform: translate(-2px, 2px);
-                text-shadow: 2px 0 5px rgba(255,0,0,0.5), -2px 0 5px rgba(0,255,255,0.5);
-            }
-            40% {
-                transform: translate(2px, -2px);
-                text-shadow: 4px 0 5px rgba(255,0,0,0.5), -4px 0 5px rgba(0,255,255,0.5);
-            }
-            60% {
-                transform: translate(-2px, 2px);
-                text-shadow: 2px 0 5px rgba(255,0,0,0.5), -2px 0 5px rgba(0,255,255,0.5);
-            }
-            80% {
-                transform: translate(2px, -2px);
-                text-shadow: 0 0 5px var(--matrix-green);
-            }
-            100% {
-                transform: translate(0);
-                text-shadow: 0 0 5px var(--matrix-green);
-            }
-        }
-
-        .matrix-background {
+        .glitch-background {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            background-color: var(--black);
+            overflow: hidden;
             pointer-events: none;
             z-index: 0;
         }
 
-        .matrix-column {
+        .glitch-background::before {
+            content: "";
             position: absolute;
-            top: -100%;
-            color: var(--matrix-green);
-            font-size: 1.2rem;
-            opacity: 0.3;
-            text-shadow: 0 0 5px var(--matrix-green);
-            animation: matrix-rain linear infinite;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                rgba(176, 24, 39, 0.2) 50%, 
+                rgba(0, 0, 0, 0.2) 50%
+            );
+            background-size: 100% 4px;
+            animation: glitch-scan 0.5s linear infinite;
+            mix-blend-mode: overlay;
         }
 
-        .matrix-column span {
+        .glitch-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(176, 24, 39, 0.2) 1px,
+                    rgba(176, 24, 39, 0.2) 2px
+                );
+            animation: glitch-offset 0.2s infinite;
+            mix-blend-mode: color-dodge;
+        }
+
+        .glitch-background.stabilizing::before,
+        .glitch-background.stabilizing::after {
+            animation-duration: 4s;
+            opacity: 0.5;
+            transition: all 2s ease;
+        }
+
+        @keyframes glitch-scan {
+            0% { transform: translateY(-50%) skewX(20deg); }
+            25% { transform: translateY(-25%) skewX(-20deg); }
+            50% { transform: translateY(0) skewX(15deg); }
+            75% { transform: translateY(25%) skewX(-15deg); }
+            100% { transform: translateY(50%) skewX(20deg); }
+        }
+
+        @keyframes glitch-offset {
+            0% { 
+                transform: translate(0) scale(1);
+                opacity: 1;
+            }
+            20% {
+                transform: translate(-10px, 10px) scale(1.1);
+                opacity: 0.8;
+            }
+            40% {
+                transform: translate(-5px, -15px) scale(0.9);
+                opacity: 0.9;
+            }
+            60% {
+                transform: translate(15px, 5px) scale(1.2);
+                opacity: 0.8;
+            }
+            80% {
+                transform: translate(-15px, -5px) scale(0.8);
+                opacity: 0.9;
+            }
+            100% { 
+                transform: translate(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .warning-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid var(--red);
+            padding: 30px;
+            color: var(--red);
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            font-size: 24px;
+            letter-spacing: 2px;
+            animation: warning-glitch 0.2s infinite, warning-pulse 2s infinite;
+            box-shadow: 0 0 30px var(--red);
+            max-width: 80%;
+            text-transform: uppercase;
+            border-radius: 5px;
+        }
+
+        .warning-message::before {
+            content: "!";
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            animation: warning-blink 0.5s infinite;
+        }
+
+        .warning-message .warning-header {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--red);
+        }
+
+        .warning-message .warning-text {
+            font-size: 20px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .warning-message .key-prompt {
+            font-size: 18px;
+            border: 1px solid var(--red);
+            padding: 5px 10px;
             display: inline-block;
+            margin-top: 10px;
+            animation: key-flash 1s infinite;
         }
 
-        .matrix-column span.glitch {
-            animation: glitch-effect 0.3s ease-in-out;
+        @keyframes warning-glitch {
+            0% { transform: translate(-50%, -50%) scale(1) skew(0deg); text-shadow: 3px 0 var(--red), -3px 0 cyan; }
+            25% { transform: translate(-52%, -48%) scale(1.02) skew(1deg); text-shadow: -3px 0 var(--red), 3px 0 cyan; }
+            50% { transform: translate(-50%, -52%) scale(0.98) skew(-1deg); text-shadow: 3px 0 var(--red), -3px 0 cyan; }
+            75% { transform: translate(-48%, -50%) scale(1.02) skew(0.5deg); text-shadow: -3px 0 var(--red), 3px 0 cyan; }
+            100% { transform: translate(-50%, -50%) scale(1) skew(0deg); text-shadow: 3px 0 var(--red), -3px 0 cyan; }
+        }
+
+        @keyframes warning-pulse {
+            0%, 100% { box-shadow: 0 0 30px var(--red); }
+            50% { box-shadow: 0 0 50px var(--red); }
+        }
+
+        @keyframes warning-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes key-flash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(176, 24, 39, 0.2); }
+        }
+
+        .glitch-slice {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(176, 24, 39, 0.2);
+            animation: glitch-slice 3s infinite;
+        }
+
+        @keyframes glitch-slice {
+            0% { 
+                top: -100%;
+            }
+            100% { 
+                top: 100%;
+            }
         }
 
         body {
@@ -324,7 +447,14 @@
     </style>
 </head>
 <body>
-    <div class="matrix-background" id="matrixBackground"></div>
+    <div class="glitch-background" id="glitchBackground"></div>
+    <div class="warning-message" id="warningMessage">
+        <div class="warning-header">CRITICAL ALERT</div>
+        <div class="warning-text">SEVERE SYSTEM INSTABILITY DETECTED</div>
+        <div class="warning-text">QUANTUM FLUCTUATIONS EXCEEDING SAFE PARAMETERS</div>
+        <div class="warning-text">IMMEDIATE INTERVENTION REQUIRED</div>
+        <div class="key-prompt">PRESS [SPACE] TO INITIATE EMERGENCY STABILIZATION</div>
+    </div>
     <div class="crt-overlay"></div>
     <div class="terminal">
         <div class="terminal-header">
@@ -443,7 +573,7 @@
     </div>
 
     <script>
-        function toggleProject(projectId) {
+        const toggleProject = (projectId) => {
             const content = document.getElementById(projectId);
             const allProjects = document.querySelectorAll('.project-content');
             
@@ -463,55 +593,241 @@
                 content.offsetHeight; // Trigger reflow
                 content.style.animation = null;
             }
-        }
+        };
 
         // Matrix rain effect
-        function createMatrixRain() {
-            const container = document.getElementById('matrixBackground');
-            const characters = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789';
-            const columns = Math.floor(window.innerWidth / 25); // Increased spacing between columns
+        const createGlitchEffect = () => {
+            const background = document.querySelector('.glitch-background');
+            const warningMessage = document.getElementById('warningMessage');
+            let isStabilized = false;
+            let sliceInterval, colorInterval;
+            
+            const startViolentGlitch = () => {
+                // Start immediately with build-up
+                const subtleInterval = setInterval(() => {
+                    if (Math.random() > 0.9) {
+                        background.style.filter = `
+                            brightness(${1 + Math.random() * 0.1})
+                            blur(${Math.random() * 0.5}px)`;
+                        setTimeout(() => background.style.filter = '', 50);
+                    }
+                }, 200);
 
-            for (let i = 0; i < columns; i++) {
-                const column = document.createElement('div');
-                column.className = 'matrix-column';
-                column.style.left = `${i * 25}px`;
-                // Slower rain animation (3-6 seconds instead of 1-3)
-                column.style.animationDuration = `${Math.random() * 3 + 3}s`;
-                
-                let content = '';
-                const length = Math.floor(Math.random() * 15 + 8); // Slightly shorter columns
-                for (let j = 0; j < length; j++) {
-                    content += `<span>${characters[Math.floor(Math.random() * characters.length)]}</span><br>`;
-                }
-                column.innerHTML = content;
-                container.appendChild(column);
+                // Occasional tiny glitch lines
+                const subtleSliceInterval = setInterval(() => {
+                    if (Math.random() > 0.95) {
+                        const slice = document.createElement('div');
+                        slice.className = 'glitch-slice';
+                        slice.style.height = '1px';
+                        slice.style.opacity = '0.1';
+                        background.appendChild(slice);
+                        setTimeout(() => slice.remove(), 300);
+                    }
+                }, 300);
+
+                    // After exactly 3s, unleash chaos
+                setTimeout(() => {
+                    clearInterval(subtleInterval);
+                    clearInterval(subtleSliceInterval);
+                    
+                    // Sudden screen shake
+                    background.style.transform = 'scale(1.2) rotate(2deg)';
+                    setTimeout(() => background.style.transform = '', 200);
+                    
+                    warningMessage.style.display = 'block';
+                    
+                    // Intense glitch burst
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            const slice = document.createElement('div');
+                            slice.className = 'glitch-slice';
+                            slice.style.height = Math.random() * 100 + 'px';
+                            slice.style.opacity = Math.random() * 0.9 + 0.1;
+                            background.appendChild(slice);
+                            setTimeout(() => slice.remove(), Math.random() * 800);
+                        }, i * 50);
+                    }
+
+                        // Start ongoing violent glitches
+                        sliceInterval = setInterval(() => {
+                            if (Math.random() > 0.6) {
+                                const slice = document.createElement('div');
+                                slice.className = 'glitch-slice';
+                                slice.style.height = Math.random() * 20 + 'px';
+                                slice.style.opacity = Math.random() * 0.8 + 0.2;
+                                background.appendChild(slice);
+                                
+                                setTimeout(() => slice.remove(), 
+                                    Math.random() * 800 + 200);
+                            }
+                        }, 30);
+
+                        // More aggressive color shift effect
+                        colorInterval = setInterval(() => {
+                            if (Math.random() > 0.7) {
+                                const intensity = Math.random() * 2 + 1;
+                                background.style.filter = `
+                                    hue-rotate(${Math.random() * 360}deg) 
+                                    blur(${Math.random() * 3}px)
+                                    brightness(${intensity})
+                                    contrast(${Math.random() + 1})
+                                    saturate(${Math.random() * 2 + 0.5})`;
+                                
+                                setTimeout(() => {
+                                    background.style.filter = '';
+                                }, Math.random() * 50 + 50);
+                            }
+                        }, 50);
+
+                        // Shake the entire background occasionally
+                        setInterval(() => {
+                            if (Math.random() > 0.8) {
+                                background.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+                                setTimeout(() => {
+                                    background.style.transform = '';
+                                }, 50);
+                            }
+                        }, 100);
+                }, 3000); // Show warning and start effects exactly at 3 seconds
+            };
+            
+            startViolentGlitch();
+
+            stabilizeGlitch = () => {
+                // Create main stabilization interface
+                const stabilizeInterface = document.createElement('div');
+                stabilizeInterface.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #00ff00;
+                    font-family: 'Courier New', monospace;
+                    text-align: center;
+                    z-index: 1000;
+                    width: 80%;
+                    max-width: 600px;
+                `;
+
+                // Create loading bar
+                const loadingBar = document.createElement('div');
+                loadingBar.style.cssText = `
+                    width: 100%;
+                    height: 20px;
+                    border: 2px solid #00ff00;
+                    margin: 20px 0;
+                    position: relative;
+                    box-shadow: 0 0 10px #00ff00;
+                `;
+
+                const progress = document.createElement('div');
+                progress.style.cssText = `
+                    width: 0%;
+                    height: 100%;
+                    background: #00ff00;
+                    transition: width 0.1s linear;
+                `;
+                loadingBar.appendChild(progress);
+
+                // Create status text
+                const statusText = document.createElement('div');
+                statusText.style.cssText = `
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                    text-shadow: 0 0 10px #00ff00;
+                `;
+
+                // Create details text
+                const detailsText = document.createElement('div');
+                detailsText.style.cssText = `
+                    font-size: 16px;
+                    opacity: 0.8;
+                `;
+
+                stabilizeInterface.appendChild(statusText);
+                stabilizeInterface.appendChild(loadingBar);
+                stabilizeInterface.appendChild(detailsText);
+                document.body.appendChild(stabilizeInterface);
+                warningMessage.style.display = 'none';
+
+                // Stabilization phases
+                const phases = [
+                    'INITIALIZING QUANTUM STABILIZERS',
+                    'RECALIBRATING NEURAL NETWORKS',
+                    'NORMALIZING FLUX CAPACITY',
+                    'SYNCHRONIZING TIME DILATION',
+                    'FINALIZING SYSTEM RESTORATION'
+                ];
+
+                let currentProgress = 0;
+                let currentPhase = 0;
+
+                const stabilizeInterval = setInterval(() => {
+                    currentProgress += 1;
+                    progress.style.width = `${currentProgress}%`;
+                    
+                    // Update phase text
+                    if (currentProgress % 20 === 0) {
+                        currentPhase = Math.min(4, Math.floor(currentProgress / 20));
+                        statusText.innerHTML = phases[currentPhase];
+                        
+                        // Add glitch effect to status text
+                        statusText.style.transform = 'scale(1.1)';
+                        setTimeout(() => statusText.style.transform = '', 100);
+                    }
+
+                    detailsText.innerHTML = `System Stability: ${currentProgress}%`;
+
+                    // Add visual effects during stabilization
+                    if (Math.random() > 0.8) {
+                        progress.style.boxShadow = '0 0 20px #00ff00';
+                        setTimeout(() => progress.style.boxShadow = '', 100);
+                    }
+
+                    background.style.filter = `
+                        blur(${(100 - currentProgress) / 25}px)
+                        brightness(${1 + (100 - currentProgress) / 100})
+                        hue-rotate(${(100 - currentProgress) * 3.6}deg)`;
+
+                    if (currentProgress >= 100) {
+                        clearInterval(stabilizeInterval);
+                        setTimeout(() => {
+                            stabilizeInterface.innerHTML = `
+                                <div style="font-size: 28px; color: #00ff00; text-shadow: 0 0 15px #00ff00;">
+                                    SYSTEM STABILIZED
+                                </div>
+                            `;
+                            setTimeout(() => {
+                                stabilizeInterface.style.transition = 'opacity 1s';
+                                stabilizeInterface.style.opacity = '0';
+                                setTimeout(() => {
+                                    stabilizeInterface.remove();
+                                    background.classList.add('stabilizing');
+                                }, 1000);
+                            }, 1000);
+                        }, 500);
+                        
+                        // Clear all glitch effects
+                        if (sliceInterval) clearInterval(sliceInterval);
+                        if (colorInterval) clearInterval(colorInterval);
+                        background.style.filter = '';
+                        isStabilized = true;
+                    }
+                }, 50);
             }
 
-            // Add random glitch effect to characters
-            setInterval(() => {
-                const chars = document.querySelectorAll('.matrix-column span');
-                // Randomly select some characters to glitch
-                chars.forEach(char => {
-                    if (Math.random() < 0.001) { // Very low probability for subtle effect
-                        char.classList.add('glitch');
-                        setTimeout(() => char.classList.remove('glitch'), 300);
-                    }
-                });
-            }, 100);
+            // Listen for spacebar press to stabilize
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' && !isStabilized) {
+                    stabilizeGlitch();
+                }
+            });
 
-            // Occasionally change characters
-            setInterval(() => {
-                const chars = document.querySelectorAll('.matrix-column span');
-                chars.forEach(char => {
-                    if (Math.random() < 0.002) {
-                        char.textContent = characters[Math.floor(Math.random() * characters.length)];
-                    }
-                });
-            }, 100);
+            startViolentGlitch();
         }
 
         // Terminal stats simulation
-        function updateTerminalStats() {
+        const updateTerminalStats = () => {
             const cpuUsage = document.getElementById('cpuUsage');
             const memUsage = document.getElementById('memUsage');
             const time = document.getElementById('terminalTime');
@@ -528,11 +844,11 @@
         }
 
         // Command typing simulation
-        function typeCommand(command, callback) {
+        const typeCommand = (command, callback) => {
             const typedCommand = document.getElementById('typedCommand');
             let index = 0;
 
-            function type() {
+            const type = () => {
                 if (index < command.length) {
                     typedCommand.textContent += command[index];
                     index++;
@@ -546,7 +862,7 @@
             type();
         }
 
-        function showSection(sectionId) {
+        const showSection = (sectionId) => {
             const command = sectionId === 'about' ? 'cat about.txt' : 'ls projects/';
             
             typeCommand(command, () => {
@@ -564,9 +880,10 @@
         }
 
         // Initialize everything
-        createMatrixRain();
+        createGlitchEffect();
         updateTerminalStats();
         showSection('about');
     </script>
 </body>
 </html>
+        }
