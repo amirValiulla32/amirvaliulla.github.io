@@ -143,21 +143,25 @@
       resolution: `${window.screen.width}x${window.screen.height}`
     };
 
-    fetch('https://ipwho.is/')
+    // Updated with fallback
+    fetch('https://ipapi.co/json/')
       .then(res => res.json())
       .then(info => {
-        if (info.success) {
-          data.ip = info.ip;
-          data.city = info.city;
-          data.country = info.country;
-        }
+        data.ip = info.ip;
+        data.city = info.city;
+        data.country = info.country_name;
+      })
+      .catch(() => {
+        data.ip = "192.168.0.99";
+        data.city = "GOTHAM";
+        data.country = "SHADOW REALM";
       })
       .finally(() => startTyping());
 
     const lines = [
       ">>> INTRUDER DETECTED.",
       () => `>>> LOCATION: ${data.city.toUpperCase()}, ${data.country.toUpperCase()}`,
-      () => `>>> DEVICE: ${data.os} / ${data.browser.split(' ')[0]}`,
+      () => `>>> OPERATING SYSTEM: ${data.os} / ${data.browser.split(' ')[0]}`,
       () => `>>> IP: ${data.ip}`,
       ">>> ACCESS LOGGED.",
       "",

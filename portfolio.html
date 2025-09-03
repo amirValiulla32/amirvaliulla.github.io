@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal: ~/amir/portfolio</title>
+    <style>
+        :root {
+            --black: #000000;
+            --red: #B01827;
+            --silver: #C0C0C0;
+            --green: #00ff00;
+            --dark-green: #003300;
+            --neon-blue: #4dc7ff;
+            --matrix-green: #00ff00;
+        }
+
+        @keyframes matrix-rain {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes glitch-effect {
+            0% {
+                transform: translate(0);
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px 0 5px rgba(255,0,0,0.5), -2px 0 5px rgba(0,255,255,0.5);
+            }
+            40% {
+                transform: translate(2px, -2px);
+                text-shadow: 4px 0 5px rgba(255,0,0,0.5), -4px 0 5px rgba(0,255,255,0.5);
+            }
+            60% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px 0 5px rgba(255,0,0,0.5), -2px 0 5px rgba(0,255,255,0.5);
+            }
+            80% {
+                transform: translate(2px, -2px);
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+            100% {
+                transform: translate(0);
+                text-shadow: 0 0 5px var(--matrix-green);
+            }
+        }
+
+        .matrix-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            color: var(--matrix-green);
+            font-size: 1.2rem;
+            opacity: 0.3;
+            text-shadow: 0 0 5px var(--matrix-green);
+            animation: matrix-rain linear infinite;
+        }
+
+        .matrix-column span {
+            display: inline-block;
+        }
+
+        .matrix-column span.glitch {
+            animation: glitch-effect 0.3s ease-in-out;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--black);
+            color: var(--silver);
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255, 0, 0, 0.03),
+                rgba(255, 0, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 5;
+            animation: flicker 1.5s infinite, flash 0.3s steps(1) infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.95; }
+            50% { opacity: 0.85; }
+        }
+
+        @keyframes flash {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.05); }
+        }
+
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid var(--red);
+            box-shadow: 0 0 10px var(--red);
+            position: relative;
+            z-index: 1;
+        }
+
+        .terminal-header {
+            border-bottom: 1px solid var(--red);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .terminal-title {
+            color: var(--neon-blue);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .terminal-stats {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .terminal-stats span {
+            color: var(--green);
+        }
+
+        .terminal-prompt {
+            color: var(--red);
+            margin-bottom: 10px;
+        }
+
+        .folder {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .folder:hover {
+            border-color: var(--red);
+            background-color: rgba(176, 24, 39, 0.1);
+        }
+
+        .folder {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .folder-icon {
+            color: var(--red);
+        }
+
+        .folder-name {
+            flex-grow: 1;
+        }
+
+        .folder-meta {
+            font-size: 0.8em;
+            color: var(--silver);
+            opacity: 0.7;
+        }
+
+        .project-content {
+            display: none;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--red);
+            background-color: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .project-header {
+            margin-bottom: 20px;
+        }
+
+        .project-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .project-status {
+            color: var(--green);
+            font-size: 0.8em;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8em;
+            color: var(--silver);
+        }
+
+        .ascii-box {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            color: var(--neon-blue);
+        }
+
+        .tech-stack {
+            margin: 20px 0;
+        }
+
+        .stack-title {
+            color: var(--red);
+            margin-bottom: 10px;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background-color: rgba(176, 24, 39, 0.2);
+            border: 1px solid var(--red);
+            padding: 5px 10px;
+            font-size: 0.8em;
+            color: var(--silver);
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-icon {
+            margin-right: 8px;
+        }
+
+        .project-content.active {
+            display: block;
+            animation: glitch 0.3s ease-in-out;
+        }
+
+        @keyframes glitch {
+            0% { transform: translateX(-2px); opacity: 0.8; }
+            25% { transform: translateX(2px); opacity: 0.9; }
+            50% { transform: translateX(-1px); opacity: 1; }
+            75% { transform: translateX(1px); opacity: 0.9; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 5px 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--red);
+            color: var(--black);
+        }
+
+        .about-me {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 2px solid var(--red);
+            background-color: rgba(176, 24, 39, 0.1);
+        }
+
+        #cursor {
+            display: inline-block;
+            animation: blink-cursor 1s step-start infinite;
+        }
+
+        @keyframes blink-cursor {
+            50% { opacity: 0; }
+        }
+
+        .navigation {
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            padding: 5px 10px;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-background" id="matrixBackground"></div>
+    <div class="crt-overlay"></div>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-title">SECURE-TERMINAL v2.5</div>
+            <div class="terminal-stats">
+                <span class="cpu">CPU: <span id="cpuUsage">0</span>%</span>
+                <span class="memory">MEM: <span id="memUsage">0</span>%</span>
+                <span class="time" id="terminalTime">00:00:00</span>
+            </div>
+            <div class="terminal-prompt">root@amir-portfolio:~$ <span id="typedCommand"></span><span id="cursor">|</span></div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="showSection('about')">cat about.txt</button>
+            <button class="nav-btn" onclick="showSection('projects')">ls projects/</button>
+            <button class="nav-btn" onclick="window.location.href='index.html'">cd ..</button>
+        </div>
+
+        <div id="about" class="section about-me">
+            <h2>>>> SYSTEM INFO</h2>
+            <p>Name: Amir Valiulla</p>
+            <p>Status: Full Stack Developer</p>
+            <p>[REDACTED INFORMATION]</p>
+            <p>Please add your brief introduction here. What drives you, what you're passionate about, and what you're looking for.</p>
+        </div>
+
+        <div id="projects" class="section">
+            <h2>>>> PROJECT DATABASE</h2>
+            
+            <div class="folder" onclick="toggleProject('project1')">
+                <span class="folder-icon">📂</span>
+                <span class="folder-name">Project_1</span>
+                <span class="folder-meta">Modified: 2025-09-02</span>
+            </div>
+            <div id="project1" class="project-content">
+                <div class="project-header">
+                    <div class="project-title">
+                        <h3>> Project_Name.exe</h3>
+                        <div class="project-status">Status: [ACTIVE]</div>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-item">Version: 1.0.0</span>
+                        <span class="meta-item">Last Update: 2025-09-02</span>
+                    </div>
+                </div>
+                <div class="project-description">
+                    <pre class="ascii-box">
+╔════════════════════════════════════════╗
+║ [PROJECT DESCRIPTION]                  ║
+║ Brief description of your project      ║
+║ goes here. Make it engaging!           ║
+╚════════════════════════════════════════╝
+                    </pre>
+                </div>
+                <div class="tech-stack">
+                    <div class="stack-title">> SYSTEM REQUIREMENTS:</div>
+                    <div class="tech-tags">
+                        <span class="tech-tag">React.js</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <button class="btn" onclick="window.open('YOUR_GITHUB_REPO_URL', '_blank')">
+                        <span class="btn-icon">⌘</span> VIEW_SOURCE
+                    </button>
+                    <button class="btn" onclick="window.open('YOUR_LIVE_DEMO_URL', '_blank')">
+                        <span class="btn-icon">▶</span> EXECUTE_DEMO
+                    </button>
+                </div>
+            </div>
+
+            <div class="folder" onclick="toggleProject('project2')">
+                <span class="folder-icon">📂</span>
+                <span class="folder-name">Project_2</span>
+                <span class="folder-meta">Modified: 2025-09-01</span>
+            </div>
+            <div id="project2" class="project-content">
+                <div class="project-header">
+                    <div class="project-title">
+                        <h3>> Another_Project.exe</h3>
+                        <div class="project-status">Status: [COMPLETED]</div>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-item">Version: 2.1.0</span>
+                        <span class="meta-item">Last Update: 2025-09-01</span>
+                    </div>
+                </div>
+                <div class="project-description">
+                    <pre class="ascii-box">
+╔════════════════════════════════════════╗
+║ [PROJECT DESCRIPTION]                  ║
+║ Description of your second project     ║
+║ goes here. Make it mysterious!         ║
+╚════════════════════════════════════════╝
+                    </pre>
+                </div>
+                <div class="tech-stack">
+                    <div class="stack-title">> SYSTEM REQUIREMENTS:</div>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">AWS</span>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <button class="btn" onclick="window.open('YOUR_GITHUB_REPO_URL', '_blank')">
+                        <span class="btn-icon">⌘</span> VIEW_SOURCE
+                    </button>
+                    <button class="btn" onclick="window.open('YOUR_LIVE_DEMO_URL', '_blank')">
+                        <span class="btn-icon">▶</span> EXECUTE_DEMO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleProject(projectId) {
+            const content = document.getElementById(projectId);
+            const allProjects = document.querySelectorAll('.project-content');
+            
+            // Close all other projects
+            allProjects.forEach(project => {
+                if (project.id !== projectId) {
+                    project.classList.remove('active');
+                }
+            });
+
+            // Toggle the clicked project
+            content.classList.toggle('active');
+
+            // Add glitch effect
+            if (content.classList.contains('active')) {
+                content.style.animation = 'none';
+                content.offsetHeight; // Trigger reflow
+                content.style.animation = null;
+            }
+        }
+
+        // Matrix rain effect
+        function createMatrixRain() {
+            const container = document.getElementById('matrixBackground');
+            const characters = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789';
+            const columns = Math.floor(window.innerWidth / 25); // Increased spacing between columns
+
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = `${i * 25}px`;
+                // Slower rain animation (3-6 seconds instead of 1-3)
+                column.style.animationDuration = `${Math.random() * 3 + 3}s`;
+                
+                let content = '';
+                const length = Math.floor(Math.random() * 15 + 8); // Slightly shorter columns
+                for (let j = 0; j < length; j++) {
+                    content += `<span>${characters[Math.floor(Math.random() * characters.length)]}</span><br>`;
+                }
+                column.innerHTML = content;
+                container.appendChild(column);
+            }
+
+            // Add random glitch effect to characters
+            setInterval(() => {
+                const chars = document.querySelectorAll('.matrix-column span');
+                // Randomly select some characters to glitch
+                chars.forEach(char => {
+                    if (Math.random() < 0.001) { // Very low probability for subtle effect
+                        char.classList.add('glitch');
+                        setTimeout(() => char.classList.remove('glitch'), 300);
+                    }
+                });
+            }, 100);
+
+            // Occasionally change characters
+            setInterval(() => {
+                const chars = document.querySelectorAll('.matrix-column span');
+                chars.forEach(char => {
+                    if (Math.random() < 0.002) {
+                        char.textContent = characters[Math.floor(Math.random() * characters.length)];
+                    }
+                });
+            }, 100);
+        }
+
+        // Terminal stats simulation
+        function updateTerminalStats() {
+            const cpuUsage = document.getElementById('cpuUsage');
+            const memUsage = document.getElementById('memUsage');
+            const time = document.getElementById('terminalTime');
+
+            setInterval(() => {
+                // Simulate CPU and memory usage
+                cpuUsage.textContent = Math.floor(Math.random() * 30 + 70);
+                memUsage.textContent = Math.floor(Math.random() * 20 + 60);
+                
+                // Update time
+                const now = new Date();
+                time.textContent = now.toTimeString().split(' ')[0];
+            }, 1000);
+        }
+
+        // Command typing simulation
+        function typeCommand(command, callback) {
+            const typedCommand = document.getElementById('typedCommand');
+            let index = 0;
+
+            function type() {
+                if (index < command.length) {
+                    typedCommand.textContent += command[index];
+                    index++;
+                    setTimeout(type, Math.random() * 50 + 50);
+                } else {
+                    setTimeout(callback, 500);
+                }
+            }
+
+            typedCommand.textContent = '';
+            type();
+        }
+
+        function showSection(sectionId) {
+            const command = sectionId === 'about' ? 'cat about.txt' : 'ls projects/';
+            
+            typeCommand(command, () => {
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => {
+                    if (section.id === sectionId) {
+                        section.style.display = 'block';
+                        section.style.animation = 'glitch 0.3s ease-in-out';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+                document.getElementById('typedCommand').textContent = '';
+            });
+        }
+
+        // Initialize everything
+        createMatrixRain();
+        updateTerminalStats();
+        showSection('about');
+    </script>
+</body>
+</html>
