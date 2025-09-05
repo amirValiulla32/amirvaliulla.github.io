@@ -198,6 +198,37 @@
             }
         }
 
+        .cli-container {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+            font-family: 'Courier New', monospace;
+            color: var(--red);
+            position: relative;
+            height: 20px;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: var(--red);
+            margin-left: 3px;
+            animation: cursor-blink 1s step-end infinite;
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .typed-text {
+            display: inline-block;
+            white-space: pre;
+            color: var(--red);
+            font-family: 'Courier New', monospace;
+        }
+
         body {
             margin: 0;
             background-color: var(--black);
@@ -582,8 +613,49 @@
 
                 <div class="identity-section">
                     <span class="label">[IDENTITY]</span> Amir Valiulla
-                    <span class="status-indicator">⚡ ONLINE</span>
+                    <div class="cli-container">
+                        <span class="command-prefix">$ </span>
+                        <span class="typed-text"></span>
+                        <span class="terminal-cursor"></span>
+                    </div>
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const messages = [
+                            './decrypt 0xAF3E1...',
+                            'tracking_signal::found',
+                            '[REDACTED]::neural_link_active',
+                            'executing_protocol_omega'
+                        ];
+                        const typedTextElement = document.querySelector('.typed-text');
+                        let messageIndex = 0;
+                        let charIndex = 0;
+                        
+                        function typeCharacter() {
+                            if (charIndex < messages[messageIndex].length) {
+                                typedTextElement.textContent += messages[messageIndex].charAt(charIndex);
+                                charIndex++;
+                                setTimeout(typeCharacter, 100); // Adjust typing speed here
+                            } else {
+                                setTimeout(eraseCharacters, 2000); // Wait before erasing
+                            }
+                        }
+                        
+                        function eraseCharacters() {
+                            if (charIndex > 0) {
+                                typedTextElement.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                                charIndex--;
+                                setTimeout(eraseCharacters, 50); // Adjust erasing speed here
+                            } else {
+                                messageIndex = (messageIndex + 1) % messages.length;
+                                setTimeout(typeCharacter, 500); // Wait before typing next message
+                            }
+                        }
+                        
+                        typeCharacter(); // Start the animation
+                    });
+                </script>
                 
                 <div class="role-section">
                     <span class="label">[ROLES]</span>
@@ -919,7 +991,7 @@
                 </div>
 
                 <div class="archive-stats">
-                    <span class="stat-item">TOTAL_PROJECTS: 6</span>
+                    <span class="stat-item">TOTAL_PROJECTS: 6noth</span>
                     <span class="stat-item">STATUS: COMPLETED</span>
                     <span class="stat-item">CLASSIFICATION: ARCHIVED</span>
                 </div>
