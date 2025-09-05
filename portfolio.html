@@ -444,6 +444,104 @@
         .nav-btn:hover {
             text-decoration: underline;
         }
+
+        .projects-section {
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .project-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .project-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #b01827;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #b01827, transparent);
+            animation: scanline 2s linear infinite;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #b01827;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: rgba(176, 24, 39, 0.1);
+            border: 1px solid #b01827;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #b01827;
+            opacity: 0.6;
+            animation: glow 2s infinite;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .tech-stack span {
+            color: #00ff00;
+            font-size: 0.8rem;
+        }
+
+        .eta {
+            color: #b01827;
+            font-size: 0.9rem;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #b01827; }
+            50% { box-shadow: 0 0 15px #b01827; }
+            100% { box-shadow: 0 0 5px #b01827; }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
     </style>
 </head>
 <body>
@@ -473,102 +571,838 @@
             <button class="nav-btn" onclick="window.location.href='index.html'">cd ..</button>
         </div>
 
-        <div id="about" class="section about-me">
-            <h2>>>> SYSTEM INFO</h2>
-            <p>Name: Amir Valiulla</p>
-            <p>Status: Full Stack Developer</p>
-            <p>[REDACTED INFORMATION]</p>
-            <p>Please add your brief introduction here. What drives you, what you're passionate about, and what you're looking for.</p>
+                <div id="about" class="section about-me">
+            <div class="terminal-output">
+                <div class="system-header">
+                    <pre class="ascii-box">
+╔═══════════════════════════════════════════╗
+║             SYSTEM INFORMATION            ║
+╚═══════════════════════════════════════════╝</pre>
+                </div>
+
+                <div class="identity-section">
+                    <span class="label">[IDENTITY]</span> Amir Valiulla
+                    <span class="status-indicator">⚡ ONLINE</span>
+                </div>
+                
+                <div class="role-section">
+                    <span class="label">[ROLES]</span>
+                    <div class="role-tags">
+                        <span class="role-tag">CLOUD_ENGINEER</span>
+                        <span class="role-tag">DEVOPS_OPERATOR</span>
+                        <span class="role-tag">BUILDER</span>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <span class="label">[CORE_EXPERTISE]</span>
+                    <p class="matrix-text">Architecting secure, scalable infrastructure via AWS, Terraform, and automation-first pipelines. Specialized in cloud architecture, backend systems, scripting, and developer tooling.</p>
+                </div>
+
+                <div class="philosophy-section">
+                    <span class="label">[OPERATING_PRINCIPLES]</span>
+                    <p class="matrix-text"> I enjoy building things that will make people's lives easier, more productive, and more enjoyable. I try my best to ensure that any work I produce is of the highest quality, from the smallest thing to the most complex.</p>
+                </div>
+
+                <div class="current-status-section">
+                    <span class="label">[CURRENT_STATUS]</span>
+                    <p class="matrix-text">DevOps + Backend Intern @ Boycat.io, June 2024 - Present</p>
+                    <p class="matrix-text">Architected and deployed Related News engine for Boycat Times</p>
+                    <p class="matrix-text">Stack: Python microservice + Supabase backend + Railway deployment.</p>
+
+                    <p class="matrix-text">Engineering an AI agentic pipeline to expose brands complicit in occupation, apartheid, and war crimes.</p>
+                    <p class="matrix-text">Building a LangChain + RAG-powered chatbot to support the BDS movement — guiding users on what to boycott, why it matters, and how to shop ethically.</p>
+                </div>
+
+                                <div class="active-projects-section">
+                    <span class="label">[ACTIVE_PROJECTS]</span>
+                    <ul class="project-list">
+                        <li>
+                            <div class="project-header">
+                                <span class="project-status-icon">▲</span>
+                                <span class="project-name">Carelink.dev</span>
+                                <span class="development-status">[STATUS: FINAL_TESTING]</span>
+                            </div>
+                            <div class="project-details">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 90%"></div>
+                                    <span class="progress-text">BUILD_PROGRESS: 90%</span>
+                                </div>
+                                <span class="tech-stack">[Next.js + Whisper.cpp + mySQL + gemma3n]</span>
+                                <span class="eta">LAUNCH: IMMINENT</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="project-header">
+                                <span class="project-status-icon">▲</span>
+                                <span class="project-name">DataDrain.net</span>
+                                <span class="development-status">[STATUS: IN_DEVELOPMENT]</span>
+                            </div>
+                            <div class="project-details">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                    <span class="progress-text">BUILD_PROGRESS: 65%</span>
+                                </div>
+                                <span class="tech-stack">[Next.js + Supabase + Stripe]</span>
+                                <span class="eta">ETA: Q4 2025</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="project-header">
+                                <span class="project-status-icon">▲</span>
+                                <span class="project-name">AI Agentic Pipeline</span>
+                                <span class="development-status">[STATUS: RESEARCH_PHASE]</span>
+                            </div>
+                            <div class="project-details">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 40%"></div>
+                                    <span class="progress-text">BUILD_PROGRESS: 40%</span>
+                                </div>
+                                <span class="tech-stack">[Python + LangChain + Vector DB]</span>
+                                <span class="eta">ETA: Q3 2026</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="project-header">
+                                <span class="project-status-icon">▲</span>
+                                <span class="project-name">Ethical Shopping Assistant</span>
+                                <span class="development-status">[STATUS: PROTOTYPING]</span>
+                            </div>
+                            <div class="project-details">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 25%"></div>
+                                    <span class="progress-text">BUILD_PROGRESS: 25%</span>
+                                </div>
+                                <span class="tech-stack">[RAG + FastAPI + PostgreSQL]</span>
+                                <span class="eta">ETA: Q1 2026</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="project-header">
+                                <span class="project-status-icon">▲</span>
+                                <span class="project-name">Silvr.life</span>
+                                <span class="development-status">[STATUS: INITIALIZING]</span>
+                            </div>
+                            <div class="project-details">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 15%"></div>
+                                    <span class="progress-text">BUILD_PROGRESS: 15%</span>
+                                </div>
+                                <span class="eta">ETA: Q2 2026</span>
+                                <span class="tech-stack">[Ecommerce + Product design]</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="connection-section">
+                    <span class="label">[SEEKING_CONNECTIONS]</span>
+                    <p class="matrix-text">If any of my projects resonate with you, and you think you can contribute then don't hesitate to reach out!</p>
+                </div>
+            </div>
         </div>
 
+        <style>
+            .terminal-output {
+                font-family: 'Courier New', monospace;
+                color: var(--silver);
+                padding: 20px;
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid var(--red);
+                margin-top: 20px;
+            }
+
+            .system-header {
+                margin-bottom: 30px;
+                color: var(--red);
+            }
+
+            .label {
+                color: var(--red);
+                font-weight: bold;
+                margin-right: 10px;
+            }
+
+            .identity-section {
+                margin-bottom: 20px;
+                font-size: 1.2em;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .status-indicator {
+                color: var(--green);
+                font-size: 0.8em;
+                animation: blink 1s infinite;
+            }
+
+            .role-section {
+                margin-bottom: 25px;
+            }
+
+            .role-tags {
+                display: flex;
+                gap: 10px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .role-tag {
+                background: rgba(176, 24, 39, 0.2);
+                border: 1px solid var(--red);
+                padding: 5px 10px;
+                font-size: 0.9em;
+                color: var(--silver);
+            }
+
+            .matrix-text {
+                color: var(--green);
+                line-height: 1.6;
+                margin: 10px 0;
+                font-size: 0.9em;
+            }
+
+            .project-list {
+                list-style: none;
+                padding: 0;
+                margin: 10px 0;
+            }
+
+            .project-list li {
+                margin-bottom: 15px;
+                color: var(--green);
+                font-size: 0.9em;
+            }
+
+            .tech-stack {
+                color: var(--neon-blue);
+                font-size: 0.8em;
+                margin-left: 10px;
+            }
+
+            .expertise-section,
+            .philosophy-section,
+            .current-status-section,
+            .active-projects-section,
+            .connection-section {
+                margin-bottom: 25px;
+                padding-left: 15px;
+                border-left: 2px solid var(--red);
+            }
+
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+
+            /* Project List Styles */
+            .project-list li {
+                margin-bottom: 25px;
+                padding: 15px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--red);
+                position: relative;
+            }
+
+            .project-list li:hover {
+                background: rgba(176, 24, 39, 0.1);
+                box-shadow: 0 0 15px rgba(176, 24, 39, 0.2);
+            }
+
+            .project-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .project-status-icon {
+                color: var(--red);
+                animation: pulse 2s infinite;
+            }
+
+            .project-name {
+                color: var(--green);
+                font-weight: bold;
+            }
+
+            .development-status {
+                color: var(--neon-blue);
+                font-size: 0.8em;
+                margin-left: auto;
+            }
+
+            .project-details {
+                padding-left: 20px;
+                font-size: 0.9em;
+            }
+
+            .progress-bar {
+                height: 15px;
+                background: rgba(176, 24, 39, 0.1);
+                border: 1px solid var(--red);
+                margin: 10px 0;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .progress {
+                height: 100%;
+                background: var(--red);
+                opacity: 0.6;
+                animation: glowingProgress 2s infinite;
+                position: relative;
+            }
+
+            .progress::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+                );
+                animation: progressShine 1.5s linear infinite;
+            }
+
+            .progress-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: var(--silver);
+                font-size: 0.8em;
+                text-shadow: 0 0 5px var(--black);
+                white-space: nowrap;
+            }
+
+            .eta {
+                display: block;
+                color: var(--silver);
+                font-size: 0.8em;
+                margin-top: 5px;
+                opacity: 0.8;
+            }
+
+            @keyframes pulse {
+                0% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.3; transform: scale(0.95); }
+                100% { opacity: 1; transform: scale(1); }
+            }
+
+            @keyframes glowingProgress {
+                0% { box-shadow: 0 0 5px var(--red); }
+                50% { box-shadow: 0 0 15px var(--red); }
+                100% { box-shadow: 0 0 5px var(--red); }
+            }
+
+            @keyframes progressShine {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+            }
+        </style>
+
         <div id="projects" class="section">
-            <h2>>>> PROJECT DATABASE</h2>
-            
-            <div class="folder" onclick="toggleProject('project1')">
-                <span class="folder-icon">📂</span>
-                <span class="folder-name">Project_1</span>
-                <span class="folder-meta">Modified: 2025-09-02</span>
-            </div>
-            <div id="project1" class="project-content">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h3>> Project_Name.exe</h3>
-                        <div class="project-status">Status: [ACTIVE]</div>
-                    </div>
-                    <div class="project-meta">
-                        <span class="meta-item">Version: 1.0.0</span>
-                        <span class="meta-item">Last Update: 2025-09-02</span>
-                    </div>
-                </div>
-                <div class="project-description">
+            <div class="projects-archive">
+                <div class="archive-header">
                     <pre class="ascii-box">
-╔════════════════════════════════════════╗
-║ [PROJECT DESCRIPTION]                  ║
-║ Brief description of your project      ║
-║ goes here. Make it engaging!           ║
-╚════════════════════════════════════════╝
-                    </pre>
+╔════════════════════════════════════════════════════════╗
+║                 PROJECTS_ARCHIVE.dat                   ║
+║          [AUTHENTICATED ACCESS GRANTED]                ║
+╚════════════════════════════════════════════════════════╝</pre>
                 </div>
-                <div class="tech-stack">
-                    <div class="stack-title">> SYSTEM REQUIREMENTS:</div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">React.js</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">MongoDB</span>
+
+                <div class="archive-stats">
+                    <span class="stat-item">TOTAL_PROJECTS: 6</span>
+                    <span class="stat-item">STATUS: COMPLETED</span>
+                    <span class="stat-item">CLASSIFICATION: ARCHIVED</span>
+                </div>
+
+                <div class="archive-grid">
+                    <div class="archive-entry">
+                        <div class="entry-header">
+                            <span class="completion-date">[2025-09-05]</span>
+                            <span class="project-id">PROJECT_ID: AV-2025-001</span>
+                            <span class="checksum">CHECKSUM: 0xBEEF42</span>
+                        </div>
+                        <div class="entry-title">
+                            <h3>SecureScrape‑X</h3>
+                            <span class="verified-badge">✓ VERIFIED</span>
+                        </div>
+                        <div class="entry-details">
+                            <div class="tech-matrix">
+                            <span>[TERRAFORM]</span>
+                            <span>[AWS]</span>
+                            <span>[GUARDDUTY]</span>
+                            <span>[EVENTBRIDGE]</span>
+                            <span>[LAMBDA]</span>
+                            <span>[ASG]</span>
+                            <span>[ALB]</span>
+                            <span>[CLOUDWATCH]</span>
+                            <span>[SECRET_MANAGER]</span>
+                            <span>[BEDROCK‑AI] (PENDING)</span>
+                            </div>
+                            <div class="metrics">
+                            <span>REMEDIATION: AUTOMATED</span>
+                            <span>REPLACEMENT: ASG ROLLOVER</span>
+                            <span>STATUS: RESILIENT & SCALABLE</span>
+
+                            </div>
+                             <div class="entry-actions">
+                                <button onclick="window.open('https://github.com/amirValiulla32/SecureScrape-X.git', '_blank')" class="source-btn">
+                                    <span class="btn-icon">⌘</span>
+                                    <span class="btn-text">VIEW_SOURCE</span>
+                                    <span class="btn-hash">#E2D4C1</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
+                            <div class="archive-entry">
+            <div class="entry-header">
+                <span class="completion-date">[2025-09-05]</span>
+                <span class="project-id">PROJECT_ID: AV-2025-002</span>
+                <span class="checksum">CHECKSUM: 0xC0DE42</span>
+            </div>
+            <div class="entry-title">
+                <h3>Quality Automation & Operational Dashboard</h3>
+                <span class="verified-badge">✓ VERIFIED</span>
+            </div>
+            <div class="entry-details">
+                <div class="tech-matrix">
+                <span>[PYTHON]</span>
+                <span>[FLASK]</span>
+                <span>[STREAMLIT]</span>
+                <span>[SQLITE]</span>
+                <span>[PYTEST]</span>
                 </div>
-                <div class="project-actions">
-                    <button class="btn" onclick="window.open('YOUR_GITHUB_REPO_URL', '_blank')">
-                        <span class="btn-icon">⌘</span> VIEW_SOURCE
-                    </button>
-                    <button class="btn" onclick="window.open('YOUR_LIVE_DEMO_URL', '_blank')">
-                        <span class="btn-icon">▶</span> EXECUTE_DEMO
-                    </button>
+                <div class="metrics">
+                <span>WORKFLOW AUTOMATION: ALIGNED</span>
+                <span>DASHBOARD: LIVE STREAMLIT</span>
+                <span>QA‑VALIDATION: REGRESSION TEST SUITE</span>
+                </div>
+                <div class="entry-actions">
+                <button onclick="window.open('https://github.com/amirValiulla32/quality-automation-dashboard', '_blank')" class="source-btn">
+                    <span class="btn-icon">⌘</span>
+                    <span class="btn-text">VIEW_SOURCE</span>
+                    <span class="btn-hash">#C0DE42</span>
+                </button>
+                </div>
+                <div class="entry-actions">
+                <button onclick="window.open('https://quality-automation-dashboard-hgjtggjetgyqgy3dmyxvma.streamlit.app/', '_blank')" class="source-btn">
+                    <span class="btn-icon">⌘</span>
+                    <span class="btn-text">VIEW_LIVE</span>
+                    <span class="btn-hash">#C0DE42</span>
+                </button>
+                </div>
+            </div>
+            </div>
+                    <div class="archive-entry">
+  <div class="entry-header">
+    <span class="completion-date">[2025-09-05]</span>
+    <span class="project-id">PROJECT_ID: AV-2025-003</span>
+    <span class="checksum">CHECKSUM: 0xSL1D3H</span>
+  </div>
+  <div class="entry-title">
+    <h3>SlideHack</h3>
+    <span class="verified-badge">✓ VERIFIED</span>
+  </div>
+  <div class="entry-details">
+    <div class="tech-matrix">
+      <span>[PYTHON]</span>
+      <span>[PPTX]</span>
+      <span>[GOOGLE_TRANSLATION_API]</span>
+      <span>[AUTOMATION]</span>
+    </div>
+    <div class="metrics">
+      <span>LAYOUT PRESERVED: TRUE</span>
+      <span>WORKFLOW: FULLY AUTOMATED</span>
+      <span>TARGET LANG: configurable (default: Spanish)</span>
+    </div>
+    <div class="entry-actions">
+      <button onclick="window.open('https://github.com/amirValiulla32/slidehack', '_blank')" class="source-btn">
+        <span class="btn-icon">⌘</span>
+        <span class="btn-text">VIEW_SOURCE</span>
+        <span class="btn-hash">#SL1D3H</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="archive-entry">
+  <div class="entry-header">
+    <span class="completion-date">[2025-09-05]</span>
+    <span class="project-id">PROJECT_ID: AV‑2025‑004</span>
+    <span class="checksum">CHECKSUM: 0xPA1TR4K</span>
+  </div>
+  <div class="entry-title">
+    <h3>PalTrack – Media Bias Tracker for Palestine</h3>
+    <span class="verified-badge">✓ VERIFIED</span>
+  </div>
+  <div class="entry-details">
+    <div class="tech-matrix">
+      <span>[PYTHON]</span>
+      <span>[FEEDPARSER]</span>
+      <span>[SQLITE/POSTGRESQL]</span>
+      <span>[NLP (planned)]</span>
+    </div>
+    <div class="metrics">
+      <span>DATA INGESTION: RSS FEED PARSING</span>
+      <span>STORAGE: STRUCTURED DB (PLANNED)</span>
+      <span>ANALYSIS: BIAS DETECTION (UPCOMING)</span>
+    </div>
+    <div class="entry-actions">
+      <button onclick="window.open('https://github.com/amirValiulla32/PalTrack', '_blank')" class="source-btn">
+        <span class="btn-icon">⌘</span>
+        <span class="btn-text">VIEW_SOURCE</span>
+        <span class="btn-hash">#PA1TR4K</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="archive-entry">
+  <div class="entry-header">
+    <span class="completion-date">[2025-09-05]</span>
+    <span class="project-id">PROJECT_ID: AV‑2025‑005</span>
+    <span class="checksum">CHECKSUM: 0xTFAWSASG</span>
+  </div>
+  <div class="entry-title">
+    <h3>Terraform AWS Auto‑Scaling Deployment</h3>
+    <span class="verified-badge">✓ VERIFIED</span>
+  </div>
+  <div class="entry-details">
+    <div class="tech-matrix">
+      <span>[TERRAFORM]</span>
+      <span>[AWS]</span>
+      <span>[ALB]</span>
+      <span>[ASG]</span>
+      <span>[LAUNCH_TEMPLATE]</span>
+      <span>[APACHE]</span>
+    </div>
+    <div class="metrics">
+      <span>MIN/MAX: 1–3 INSTANCES</span>
+      <span>LOAD_BALANCED: ACROSS AZs</span>
+      <span>SERVICE: HTTP via Apache</span>
+    </div>
+    <div class="entry-actions">
+      <button onclick="window.open('https://github.com/amirValiulla32/terraform-aws-autoscaling', '_blank')" class="source-btn">
+        <span class="btn-icon">⌘</span>
+        <span class="btn-text">VIEW_SOURCE</span>
+        <span class="btn-hash">#TFAWSASG</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="archive-entry">
+  <div class="entry-header">
+    <span class="completion-date">[2025-09-05]</span>
+    <span class="project-id">PROJECT_ID: AV‑2025‑006</span>
+    <span class="checksum">CHECKSUM: 0xAWS‑SENTI</span>
+  </div>
+  <div class="entry-title">
+    <h3>AWS Sentiment API</h3>
+    <span class="verified-badge">✓ VERIFIED</span>
+  </div>
+  <div class="entry-details">
+    <div class="tech-matrix">
+      <span>[PYTHON]</span>
+      <span>[AWS_LAMBDA]</span>
+      <span>[API_GATEWAY]</span>
+      <span>[AWS_COMPREHEND]</span>
+    </div>
+    <div class="metrics">
+      <span>ENDPOINT: POST /analyze</span>
+      <span>RESPONSE: SENTIMENT + SCORES</span>
+      <span>PROCESSING: SERVERLESS & SCALABLE</span>
+    </div>
+    <div class="entry-actions">
+      <button onclick="window.open('https://github.com/amirValiulla32/aws-sentiment-api', '_blank')" class="source-btn">
+        <span class="btn-icon">⌘</span>
+        <span class="btn-text">VIEW_SOURCE</span>
+        <span class="btn-hash">#AWS‑SENTI</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+                <div class="archive-footer">
+                    <pre class="ascii-box">
+╔════════════════════════════════════════════════════════╗
+║            END_OF_ARCHIVE // EOF_MARKER                ║
+╚════════════════════════════════════════════════════════╝</pre>
                 </div>
             </div>
 
-            <div class="folder" onclick="toggleProject('project2')">
-                <span class="folder-icon">📂</span>
-                <span class="folder-name">Project_2</span>
-                <span class="folder-meta">Modified: 2025-09-01</span>
-            </div>
-            <div id="project2" class="project-content">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h3>> Another_Project.exe</h3>
-                        <div class="project-status">Status: [COMPLETED]</div>
-                    </div>
-                    <div class="project-meta">
-                        <span class="meta-item">Version: 2.1.0</span>
-                        <span class="meta-item">Last Update: 2025-09-01</span>
-                    </div>
-                </div>
-                <div class="project-description">
-                    <pre class="ascii-box">
-╔════════════════════════════════════════╗
-║ [PROJECT DESCRIPTION]                  ║
-║ Description of your second project     ║
-║ goes here. Make it mysterious!         ║
-╚════════════════════════════════════════╝
-                    </pre>
-                </div>
-                <div class="tech-stack">
-                    <div class="stack-title">> SYSTEM REQUIREMENTS:</div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">TensorFlow</span>
-                        <span class="tech-tag">AWS</span>
-                    </div>
-                </div>
-                <div class="project-actions">
-                    <button class="btn" onclick="window.open('YOUR_GITHUB_REPO_URL', '_blank')">
-                        <span class="btn-icon">⌘</span> VIEW_SOURCE
-                    </button>
-                    <button class="btn" onclick="window.open('YOUR_LIVE_DEMO_URL', '_blank')">
-                        <span class="btn-icon">▶</span> EXECUTE_DEMO
-                    </button>
-                </div>
-            </div>
+            <style>
+                .projects-archive {
+                    font-family: 'Courier New', monospace;
+                    padding: 20px;
+                    background: rgba(0, 0, 0, 0.8);
+                    border: 1px solid var(--red);
+                }
+
+                .archive-stats {
+                    display: flex;
+                    gap: 20px;
+                    margin: 20px 0;
+                    padding: 10px;
+                    background: rgba(176, 24, 39, 0.1);
+                    border-left: 2px solid var(--red);
+                }
+
+                .stat-item {
+                    color: var(--green);
+                    font-size: 0.9em;
+                }
+
+                .archive-grid {
+                    display: grid;
+                    gap: 20px;
+                    margin: 20px 0;
+                }
+
+                .archive-entry {
+                    background: rgba(0, 0, 0, 0.3);
+                    border: 1px solid var(--red);
+                    padding: 15px;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .archive-entry::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: linear-gradient(90deg, 
+                        rgba(176, 24, 39, 0),
+                        var(--red),
+                        rgba(176, 24, 39, 0));
+                    animation: scanline 2s linear infinite;
+                }
+
+                .entry-header {
+                    display: flex;
+                    justify-content: space-between;
+                    color: var(--silver);
+                    font-size: 0.8em;
+                    margin-bottom: 10px;
+                }
+
+                .entry-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin-bottom: 15px;
+                }
+
+                .entry-title h3 {
+                    color: var(--green);
+                    margin: 0;
+                }
+
+                .verified-badge {
+                    color: var(--green);
+                    font-size: 0.8em;
+                }
+
+                .tech-matrix {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    margin-bottom: 10px;
+                }
+
+                .tech-matrix span {
+                    color: var(--neon-blue);
+                    font-size: 0.8em;
+                }
+
+                .metrics {
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                    color: var(--silver);
+                    font-size: 0.8em;
+                }
+
+                @keyframes scanline {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+
+                .completion-date {
+                    color: var(--red);
+                }
+
+                .checksum {
+                    font-family: monospace;
+                    opacity: 0.7;
+                }
+
+                .archive-entry:hover {
+                    background: rgba(176, 24, 39, 0.1);
+                    box-shadow: 0 0 15px rgba(176, 24, 39, 0.2);
+                }
+
+                .archive-entry:hover .entry-title h3 {
+                    text-shadow: 0 0 5px var(--green);
+                }
+
+                .entry-actions {
+                    margin-top: 15px;
+                    display: flex;
+                    gap: 10px;
+                }
+
+                .source-btn {
+                    background: rgba(176, 24, 39, 0.1);
+                    border: 1px solid var(--red);
+                    color: var(--red);
+                    padding: 8px 15px;
+                    font-family: 'Courier New', monospace;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    transition: all 0.3s ease;
+                }
+
+                .source-btn:hover {
+                    background: var(--red);
+                    color: var(--black);
+                    box-shadow: 0 0 15px rgba(176, 24, 39, 0.3);
+                }
+
+                .btn-icon {
+                    font-size: 0.9em;
+                }
+
+                .btn-text {
+                    font-size: 0.8em;
+                    letter-spacing: 1px;
+                }
+
+                .btn-hash {
+                    font-size: 0.7em;
+                    opacity: 0.7;
+                    border-left: 1px solid currentColor;
+                    padding-left: 8px;
+                    margin-left: 5px;
+                }
+
+                .source-btn:hover .btn-hash {
+                    opacity: 1;
+                }
+            </style>
+        </div>
+
+<style>
+.projects-section {
+    margin: 2rem 0;
+    font-family: 'Courier New', monospace;
+}
+
+.project-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.project-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #b01827;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #b01827, transparent);
+    animation: scanline 2s linear infinite;
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #b01827;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+.progress-container {
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    height: 20px;
+    background: rgba(176, 24, 39, 0.1);
+    border: 1px solid #b01827;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: #b01827;
+    opacity: 0.6;
+    animation: glow 2s infinite;
+}
+
+.tech-stack {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.tech-stack span {
+    color: #00ff00;
+    font-size: 0.8rem;
+}
+
+.eta {
+    color: #b01827;
+    font-size: 0.9rem;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 5px #b01827; }
+    50% { box-shadow: 0 0 15px #b01827; }
+    100% { box-shadow: 0 0 5px #b01827; }
+}
+
+@keyframes scanline {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+</style>
         </div>
     </div>
 
@@ -886,4 +1720,3 @@
     </script>
 </body>
 </html>
-        }
